@@ -30,3 +30,4 @@ C:\Users\mkyan\Desktop\AI\GameAIDemo\obj\Debug\net8.0\GameAIDemo.pdb
 C:\Users\mkyan\Desktop\AI\GameAIDemo\obj\Debug\net8.0\GameAIDemo.genruntimeconfig.cache
 C:\Users\mkyan\Desktop\AI\GameAIDemo\obj\Debug\net8.0\ref\GameAIDemo.dll
 C:\Users\mkyan\Desktop\AI\GameAIDemo\bin\Debug\net8.0\Content\Font.xnb
+C:\Users\mkyan\Desktop\AI\GameAIDemo\obj\Debug\net8.0\GameAIDemo.sourcelink.json

@@ -7,13 +7,15 @@ using GameAIDemo.Entities;
 using GameAIDemo.Utilities;
 using GameAIDemo.AI.AStar;
 using GameAIDemo.AI.BehaviorTree;
+using GameAIDemo.AI.FSM;
 
 namespace GameAIDemo
 {
     public enum AIMode
     {
         AStar,
-        BehaviorTree
+        BehaviorTree,
+        FSM
     }
 
     public class Game1 : Game
@@ -33,6 +35,9 @@ namespace GameAIDemo
         
         // ビヘイビアツリー
         private List<BTAgent> _btAgents;
+        
+        // FSM
+        private List<FSMAgent> _fsmAgents;
         
         // 現在のAIモード
         private AIMode _currentMode = AIMode.AStar;
@@ -54,12 +59,27 @@ namespace GameAIDemo
 
         protected override void Initialize()
         {
-            // オブジェクトを初期化
+            // 画面サイズを設定
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.ApplyChanges();
+            
+            // 初期化
             _obstacles = new List<Obstacle>();
             _astarAgents = new List<AStarAgent>();
             _btAgents = new List<BTAgent>();
+            _fsmAgents = new List<FSMAgent>();
             
             base.Initialize();
+            
+            // マップと障害物を初期化
+            InitializeMapAndObstacles();
+            
+            // プレイヤーを作成
+            _player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            
+            // AIエージェントを作成
+            CreateAIAgents();
         }
 
         protected override void LoadContent()
@@ -117,6 +137,14 @@ namespace GameAIDemo
                     ReinitializeMapAndAgents();
                 }
             }
+            else if (keyboardState.IsKeyDown(Keys.D3) && _previousKeyboardState.IsKeyUp(Keys.D3))
+            {
+                if (_currentMode != AIMode.FSM)
+                {
+                    _currentMode = AIMode.FSM;
+                    ReinitializeMapAndAgents();
+                }
+            }
                 
             // ヘルプの表示/非表示
             if (keyboardState.IsKeyDown(Keys.H) && _previousKeyboardState.IsKeyUp(Keys.H))
@@ -145,6 +173,11 @@ namespace GameAIDemo
                     
                 case AIMode.BehaviorTree:
                     foreach (var agent in _btAgents)
+                        agent.Update(gameTime);
+                    break;
+                    
+                case AIMode.FSM:
+                    foreach (var agent in _fsmAgents)
                         agent.Update(gameTime);
                     break;
             }
@@ -177,6 +210,11 @@ namespace GameAIDemo
                     
                 case AIMode.BehaviorTree:
                     foreach (var agent in _btAgents)
+                        agent.Draw(_spriteBatch, _circleTexture);
+                    break;
+                    
+                case AIMode.FSM:
+                    foreach (var agent in _fsmAgents)
                         agent.Draw(_spriteBatch, _circleTexture);
                     break;
             }
@@ -248,18 +286,30 @@ namespace GameAIDemo
         {
             Random random = new Random();
             
+            // エージェントリストをクリア
+            _astarAgents.Clear();
+            _btAgents.Clear();
+            _fsmAgents.Clear();
+            
             // A*エージェントを作成
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Vector2 position = GetRandomPosition(random);
                 _astarAgents.Add(new AStarAgent(position, _gridMap, _player));
             }
             
             // ビヘイビアツリーエージェントを作成
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Vector2 position = GetRandomPosition(random);
                 _btAgents.Add(new BTAgent(position, _gridMap, _player, _obstacles));
+            }
+            
+            // FSMエージェントを作成
+            for (int i = 0; i < 2; i++)
+            {
+                Vector2 position = GetRandomPosition(random);
+                _fsmAgents.Add(new FSMAgent(position, _gridMap, _player));
             }
         }
 
@@ -304,16 +354,31 @@ namespace GameAIDemo
         {
             Random random = new Random();
             
-            // A*エージェントをリセット
-            foreach (var agent in _astarAgents)
+            // エージェントリストをクリア
+            _astarAgents.Clear();
+            _btAgents.Clear();
+            _fsmAgents.Clear();
+            
+            // 新しいエージェントを作成
+            // A*エージェントを作成
+            for (int i = 0; i < 2; i++)
             {
-                agent.Position = GetRandomPosition(random);
+                Vector2 position = GetRandomPosition(random);
+                _astarAgents.Add(new AStarAgent(position, _gridMap, _player));
             }
             
-            // ビヘイビアツリーエージェントをリセット
-            foreach (var agent in _btAgents)
+            // ビヘイビアツリーエージェントを作成
+            for (int i = 0; i < 2; i++)
             {
-                agent.Position = GetRandomPosition(random);
+                Vector2 position = GetRandomPosition(random);
+                _btAgents.Add(new BTAgent(position, _gridMap, _player, _obstacles));
+            }
+            
+            // FSMエージェントを作成
+            for (int i = 0; i < 2; i++)
+            {
+                Vector2 position = GetRandomPosition(random);
+                _fsmAgents.Add(new FSMAgent(position, _gridMap, _player));
             }
         }
 
@@ -502,6 +567,7 @@ namespace GameAIDemo
                 "WASD / Arrow Keys: Move Player\n" +
                 "1: A* Pathfinding AI\n" +
                 "2: Behavior Tree AI\n" +
+                "3: FSM AI\n" +
                 "R: Reset AI Positions\n" +
                 "H: Toggle Help\n" +
                 "ESC: Exit Game";
@@ -522,6 +588,7 @@ namespace GameAIDemo
                 // 行ごとに色を変える
                 if (i == 2) textColor = Color.Red;      // A*
                 else if (i == 3) textColor = Color.Orange; // Behavior Tree
+                else if (i == 4) textColor = Color.Yellow; // FSM
                 else if (i == 0) textColor = Color.LightBlue; // タイトル
                 
                 _spriteBatch.DrawString(
@@ -575,6 +642,15 @@ namespace GameAIDemo
                 new Vector2(10 + width + margin + 40, y + 5), 
                 new Vector2(10 + width + margin + 25, y + height/2), 
                 Color.Orange);
+            y += height + margin;
+            
+            // 3キー - FSM
+            _spriteBatch.Draw(_rectangleTexture, new Rectangle(10, y, width, height), Color.Yellow * 0.7f);
+            _spriteBatch.Draw(_rectangleTexture, new Rectangle(10 + width + margin, y, textWidth, height), Color.White * 0.5f);
+            // FSMと表記
+            DrawBox(_rectangleTexture, new Vector2(10 + width + margin + 10, y + height/2), Color.Yellow, 3);
+            DrawBox(_rectangleTexture, new Vector2(10 + width + margin + 20, y + height/2), Color.Yellow, 3);
+            DrawBox(_rectangleTexture, new Vector2(10 + width + margin + 35, y + height/2), Color.Yellow, 3);
             y += height + margin;
             
             // Rキー - リセット
@@ -650,6 +726,10 @@ namespace GameAIDemo
                     modeColor = Color.Orange;
                     modeName = "BEHAVIOR TREE";
                     break;
+                case AIMode.FSM:
+                    modeColor = Color.Yellow;
+                    modeName = "FSM";
+                    break;
             }
             
             // テキストでの表示（フォントがある場合）
@@ -663,7 +743,7 @@ namespace GameAIDemo
                 );
                 
                 // モード番号
-                int modeNumber = _currentMode == AIMode.AStar ? 1 : 2;
+                int modeNumber = _currentMode == AIMode.AStar ? 1 : _currentMode == AIMode.BehaviorTree ? 2 : 3;
                 _spriteBatch.DrawString(
                     _font,
                     $"MODE {modeNumber}:",
@@ -703,6 +783,8 @@ namespace GameAIDemo
                     return "Efficient path planning with obstacle avoidance";
                 case AIMode.BehaviorTree:
                     return "Decision making with hierarchical state management";
+                case AIMode.FSM:
+                    return "Finite State Machine for complex decision-making";
                 default:
                     return "";
             }
@@ -722,6 +804,9 @@ namespace GameAIDemo
                 case AIMode.BehaviorTree:
                     modeColor = Color.Orange;
                     break;
+                case AIMode.FSM:
+                    modeColor = Color.Yellow;
+                    break;
             }
             
             // モード表示の背景
@@ -739,7 +824,7 @@ namespace GameAIDemo
             );
             
             // モード番号を表示
-            int modeNumber = _currentMode == AIMode.AStar ? 1 : 2;
+            int modeNumber = _currentMode == AIMode.AStar ? 1 : _currentMode == AIMode.BehaviorTree ? 2 : 3;
             _spriteBatch.Draw(
                 _circleTexture,
                 new Vector2(50, _graphics.PreferredBackBufferHeight - 25),
