@@ -123,35 +123,18 @@ A*アルゴリズムはヒューリスティックを使った効率的な経路
 ## 参考文献
 
 ### A*パスファインディング
-1. Hart, P. E., Nilsson, N. J., & Raphael, B. (1968). "A Formal Basis for the Heuristic Determination of Minimum Cost Paths". *IEEE Transactions on Systems Science and Cybernetics*, 4(2), 100-107.
-2. Millington, I., & Funge, J. (2009). *Artificial Intelligence for Games* (2nd ed.). Morgan Kaufmann Publishers.
-3. Patel, A. (2021). "Introduction to the A* Algorithm" [Online]. Available: https://www.redblobgames.com/pathfinding/a-star/introduction.html
-4. Cui, X., & Shi, H. (2011). "A*-based Pathfinding in Modern Computer Games". *International Journal of Computer Science and Network Security*, 11(1), 125-130.
-5. Sturtevant, N. R. (2012). "Benchmarks for Grid-Based Pathfinding". *IEEE Transactions on Computational Intelligence and AI in Games*, 4(2), 144-148.
-
+1. https://blog.splout.co.jp/1550/
+2. https://qiita.com/katsunobu1008/items/7552318e9e6899a6728a
+3. https://himco.jp/2020/01/24/pathfinding%E7%B5%8C%E8%B7%AF%E6%8E%A2%E7%B4%A2-breadth-first-search%E5%B9%85%E5%84%AA%E5%85%88%E6%8E%A2%E7%B4%A2-%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0-p5-js-%E5%B0%8E%E5%85%A5/
 ### ビヘイビアツリー
-1. Isla, D. (2005). "Handling Complexity in the Halo 2 AI". *Game Developers Conference*.
-2. Champandard, A. J. (2007). "Behavior Trees for Next-Gen Game AI". *AIGameDev.com*. 
-3. Colledanchise, M., & Ögren, P. (2018). *Behavior Trees in Robotics and AI: An Introduction*. CRC Press.
-4. Marzinotto, A., Colledanchise, M., Smith, C., & Ögren, P. (2014). "Towards a Unified Behavior Trees Framework for Robot Control". *IEEE International Conference on Robotics and Automation (ICRA)*, 5420-5427.
-5. Simpson, C. (2014). "Behavior Trees for AI: How They Work" [Online]. Available: https://www.gamedeveloper.com/programming/behavior-trees-for-ai-how-they-work
-6. Shoulson, A., & Badler, N. I. (2011). "POSH: A Framework for Behavior Trees in Games with Scripted Control". *Journal of Visual Languages & Computing*, 22(6), 369-381.
+1. https://historia.co.jp/archives/29055/
+2. https://zenn.dev/adoring_onion/articles/behaviortree-samples
+3. https://dev.epicgames.com/documentation/ja-jp/unreal-engine/behavior-tree-in-unreal-engine---overview
 
 ### 有限状態マシン（FSM）
-1. Hopcroft, J. E., Motwani, R., & Ullman, J. D. (2006). *Introduction to Automata Theory, Languages, and Computation* (3rd ed.). Pearson.
-2. Buckland, M. (2005). *Programming Game AI by Example*. Wordware Publishing.
-3. Rabin, S. (Ed.). (2013). *Game AI Pro: Collected Wisdom of Game AI Professionals*. CRC Press.
-4. Dill, K. (2013). "A Game AI Approach to Autonomous Control of Virtual Characters". *Game Developers Conference*.
-5. Fu, D., & Houlette, R. (2004). "The Ultimate Guide to FSMs in Games". In S. Rabin (Ed.), *AI Game Programming Wisdom 2* (pp. 283-302). Charles River Media.
-6. Kienzle, J., Duala-Ekoko, E., & Gélineau, S. (2009). "Designing and Implementing a FSM-Based Object Behavior Specification Language". *IEEE International Conference on Software Engineering and Formal Methods*, 297-306.
+1. https://deus-ex-machina-ism.com/?p=48835#google_vignette
+2. https://joho-taisaku.com/finite-state-machine/
+3. https://2dgames.jp/game-design-method/
 
-### 総合的なゲームAI
-1. Russell, S., & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach* (4th ed.). Pearson.
-2. Yannakakis, G. N., & Togelius, J. (2018). *Artificial Intelligence and Games*. Springer.
-3. Rabin, S. (Ed.). (2002-2019). *AI Game Programming Wisdom* (Vol. 1-4). Charles River Media.
-4. Schwab, B. (2014). *AI Game Engine Programming* (3rd ed.). Course Technology PTR.
 
-## ライセンス
-
-MITライセンス 
 
