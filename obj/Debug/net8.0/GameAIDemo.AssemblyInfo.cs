@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GameAIDemo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+494717ec0b6acba67f60073b09e099a4207c715f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2e56d40bf6f703d304473e3b33e4d58fb13d1d79")]
 [assembly: System.Reflection.AssemblyProductAttribute("GameAIDemo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GameAIDemo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
